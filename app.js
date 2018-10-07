@@ -3,7 +3,7 @@ const methodOverride = require('method-override')
 const app = express()
 const mongoose = require('mongoose');
 const adminPassword = "password";
-var admin = false;
+var admin = true;
 
 var exphbs = require('express-handlebars');
 
@@ -79,6 +79,16 @@ app.get('/pledges/:id', (req, res) => {
 
 
 //----ADMIN FEATURES -----
+// DELETE
+app.delete('/pledges/:id', function (req, res) {
+  console.log("DELETE pledge")
+  Pledge.findByIdAndRemove(req.params.id).then((pledge) => {
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err.message);
+  })
+})
+
 // EDIT Pledge
 app.get('/pledges/:id/edit', (req, res) => {
   Pledge.findById(req.params.id, function(err, pledge) {
