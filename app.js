@@ -3,7 +3,7 @@ const methodOverride = require('method-override')
 const app = express()
 const mongoose = require('mongoose');
 const adminPassword = "password";
-var admin = true;
+var admin = false;
 
 var exphbs = require('express-handlebars');
 
