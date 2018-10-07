@@ -155,3 +155,6 @@ app.post('/', (req, res) => {
 app.listen(7000, () => {
   console.log('App listening on port 7000!')
 })
+
+
+module.exports = app;
