@@ -156,6 +156,16 @@ app.post('/pledges/thank_yous', (req, res) => {
   });
 });
 
+// DELETE
+app.delete('/pledges/thank_yous/:id', function (req, res) {
+  console.log("DELETE thank_you")
+  Thank_you.findByIdAndRemove(req.params.id).then((thank_you) => {
+    res.redirect(`/pledges/${thank_you.pledgeId}`);
+  }).catch((err) => {
+    console.log(err.message);
+});
+});
+
 //function change() {
 //    if (admin == false) {
 //    admin = true;
