@@ -1,10 +1,17 @@
+<style>
 
-<h1>Thank you!</h1>
+body {
+    background-color: #808080;
+}
+</style>
+
+<div style="background:transparent !important" class="jumbotron">
+    <p><center><font face= "Snell Roundhand" color="Gold" size = "30">Thank you!</font></center></p>
+</div>
 
 
 <div class="row">
 {{#each pledges}}
-<h2><a href="/pledges/{{this._id}}">{{this.name}}</a></h2>
-  <small>{{this.amount}}</small>
+<h2><a href="/pledges/{{this._id}}"><center><font color="white" face="Snell Roundhand" size = {{this.amount}}>{{this.name}}</font></center></a></h2>
 {{/each}}
  </div>

@@ -3,7 +3,7 @@ const methodOverride = require('method-override')
 const app = express()
 const mongoose = require('mongoose');
 const adminPassword = "password";
-var admin = false;
+var admin = true;
 const Schema = mongoose.Schema
 
 
@@ -129,12 +129,13 @@ app.put('/pledges/:id', (req, res) => {
 
 //Admin login page route
 app.get('/login', (req, res) => {
-  res.render('admin-login', {});
-//  if (admin == false) {
-//  admin = true;
-//} else {
-//    admin = false;
-//};
+  if (admin == false) {
+  admin = true;
+  res.render('admin-login-true', {});
+} else {
+    admin = false;
+    res.render('admin-login-false', {});
+};
 });
 
 // CREATE login password to change admin status to true
