@@ -4,6 +4,13 @@
 <h1>{{pledge.name}}</h1>
 <h2>${{pledge.amount}}</h2>
 
+<hr>
+
+    <!-- Show Comments -->
+    {{#each thank_yous}}
+      {{> thank_you}}
+    {{/each}}
+
 <a href="/">Home</a>
 
 </div>

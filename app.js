@@ -3,7 +3,9 @@ const methodOverride = require('method-override')
 const app = express()
 const mongoose = require('mongoose');
 const adminPassword = "password";
-var admin = false;
+var admin = true;
+const Schema = mongoose.Schema
+
 
 var exphbs = require('express-handlebars');
 
@@ -30,6 +32,15 @@ const Pledge = mongoose.model('Pledge', {
   name: String,
   amount: Number
 });
+
+// comment.js
+
+const Thank_you = mongoose.model('Thank_you', {
+  title: String,
+  content: String,
+  pledgeId: { type: Schema.Types.ObjectId, ref: 'Pledge' }
+});
+
 
 const Password = mongoose.model('Password', {
     password: String
@@ -67,15 +78,17 @@ app.post('/pledges', (req, res) => {
 // SHOW
 app.get('/pledges/:id', (req, res) => {
   Pledge.findById(req.params.id).then((pledge) => {
+     Thank_you.find({ pledgeId: req.params.id }).then(thank_yous => {
     if (admin == false) {
-    res.render('pledges-show', { pledge: pledge })
+    res.render('pledges-show', { pledge: pledge, thank_yous: thank_yous });
 } else {
-    res.render('pledges-show-admin', { pledge: pledge })
-}
+    res.render('pledges-show-admin', { pledge: pledge, thank_yous: thank_yous });
+};
   }).catch((err) => {
     console.log(err.message);
-  })
-})
+});
+});
+});
 
 
 //----ADMIN FEATURES -----
@@ -86,15 +99,15 @@ app.delete('/pledges/:id', function (req, res) {
     res.redirect('/');
   }).catch((err) => {
     console.log(err.message);
-  })
-})
+});
+});
 
 // EDIT Pledge
 app.get('/pledges/:id/edit', (req, res) => {
   Pledge.findById(req.params.id, function(err, pledge) {
     res.render('pledges-edit', {pledge: pledge});
   })
-})
+});
 
 // UPDATE Pledge
 app.put('/pledges/:id', (req, res) => {
@@ -104,8 +117,8 @@ app.put('/pledges/:id', (req, res) => {
     })
     .catch(err => {
       console.log(err.message)
-    })
-})
+  });
+});
 
 
 //Admin login page route
@@ -134,6 +147,15 @@ app.post('/', (req, res) => {
 });
 });
 
+ //NEW Thank you
+app.post('/pledges/thank_yous', (req, res) => {
+  Thank_you.create(req.body).then(thank_you => {
+    res.redirect(`/pledges/${thank_you.pledgeId}`);
+  }).catch((err) => {
+    console.log(err.message);
+  });
+});
+
 //function change() {
 //    if (admin == false) {
 //    admin = true;
@@ -154,7 +176,7 @@ app.post('/', (req, res) => {
 
 app.listen(7000, () => {
   console.log('App listening on port 7000!')
-})
+});
 
 
 module.exports = app;
