@@ -1,12 +1,12 @@
-<formaction="/pledges/thank_yous" method="post">
+<form action="/pledges/thankyous" method="post">
 <input type="hidden" value="{{pledge._id}}" name="pledgeId">
   <fieldset>
     <legend>Add a Thank you</legend>
     <!-- TITLE -->
     <div class="form-group">
-      <label for="thank_you-title">Title</label><br>
+      <label for="thankyou-title">Title</label><br>
       <input class="form-control"
-        id="thank_you-title"
+        id="thankyou-title"
         type="text"
         name="title"
         placeholder="Title"/>
@@ -25,6 +25,6 @@
 
   <!-- BUTTON -->
   <div class="form-group">
-    <button type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
   </div>
 </form>

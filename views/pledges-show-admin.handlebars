@@ -9,16 +9,18 @@
 <p><form method="POST" action="/pledges/{{pledge._id}}?_method=DELETE">
     <button type="submit">Delete</button>
 </form></p>
-<!-- Comment form -->
-    {{> thank_you-form}}
+
 
 <hr>
 
-    <!-- Show Comments -->
-    {{#each thank_yous}}
-      {{> thank_you}}
+<!-- thankyou form -->
+{{> thankyou-form}}
+
+    <!-- Show thankyous -->
+    {{#each thankyous}}
+      {{> admin-thankyou}}
     {{/each}}
-    
+
 <a href="/">Home</a>
 </div>
 </div>

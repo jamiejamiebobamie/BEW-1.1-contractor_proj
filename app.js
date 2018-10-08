@@ -3,7 +3,7 @@ const methodOverride = require('method-override')
 const app = express()
 const mongoose = require('mongoose');
 const adminPassword = "password";
-var admin = true;
+var admin = false;
 const Schema = mongoose.Schema
 
 
@@ -14,7 +14,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect('mongodb://localhost/rotten-potatoes');
+mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -35,7 +35,7 @@ const Pledge = mongoose.model('Pledge', {
 
 // comment.js
 
-const Thank_you = mongoose.model('Thank_you', {
+const Thankyou = mongoose.model('Thankyou', {
   title: String,
   content: String,
   pledgeId: { type: Schema.Types.ObjectId, ref: 'Pledge' }
@@ -69,7 +69,7 @@ app.post('/pledges', (req, res) => {
   Pledge.create(req.body)
   .then((pledge) => {
     console.log(pledge);
-    res.redirect('/');
+    res.redirect(`/pledges/${pledge._id}`)
   }).catch((err) => {
     console.log(err.message);
   })
@@ -78,17 +78,23 @@ app.post('/pledges', (req, res) => {
 // SHOW
 app.get('/pledges/:id', (req, res) => {
   Pledge.findById(req.params.id).then((pledge) => {
-     Thank_you.find({ pledgeId: req.params.id }).then(thank_yous => {
+     Thankyou.find({ pledgeId: req.params.id }).then(thankyous => {
     if (admin == false) {
-    res.render('pledges-show', { pledge: pledge, thank_yous: thank_yous });
+    res.render('pledges-show', { pledge: pledge, thankyous: thankyous });
 } else {
-    res.render('pledges-show-admin', { pledge: pledge, thank_yous: thank_yous });
-};
+    res.render('pledges-show-admin', { pledge: pledge, thankyous: thankyous })
+}
+})
   }).catch((err) => {
     console.log(err.message);
 });
 });
+
+//About page route
+app.get('/about', (req, res) => {
+  res.render('about', {});
 });
+
 
 
 //----ADMIN FEATURES -----
@@ -148,19 +154,20 @@ app.post('/', (req, res) => {
 });
 
  //NEW Thank you
-app.post('/pledges/thank_yous', (req, res) => {
-  Thank_you.create(req.body).then(thank_you => {
-    res.redirect(`/pledges/${thank_you.pledgeId}`);
+app.post('/pledges/thankyous/', (req, res) => {
+  Thankyou.create(req.body).then(thankyou => {
+    console.log(thankyou);
+    res.redirect(`/pledges/${thankyou.pledgeId}`);
   }).catch((err) => {
     console.log(err.message);
   });
 });
 
 // DELETE
-app.delete('/pledges/thank_yous/:id', function (req, res) {
-  console.log("DELETE thank_you")
-  Thank_you.findByIdAndRemove(req.params.id).then((thank_you) => {
-    res.redirect(`/pledges/${thank_you.pledgeId}`);
+app.delete('/pledges/thankyous/:id', function (req, res) {
+  console.log("DELETE thankyou")
+  Thankyou.findByIdAndRemove(req.params.id).then((thankyou) => {
+    res.redirect(`/pledges/${thankyou.pledgeId}`);
   }).catch((err) => {
     console.log(err.message);
 });
