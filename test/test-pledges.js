@@ -6,7 +6,7 @@ const Pledge = require('../models/pledge');
 
 const samplePledge =     {
     "name": "String",
-    "amount": "Number"
+    "amount": 5
 }
 
 chai.use(chaiHttp);
@@ -46,7 +46,7 @@ describe('Pledges', ()  => {
   // TEST CREATE
   it('should create a SINGLE pledge on /pledges POST', (done) => {
     chai.request(server)
-        .post('/pledges/new')
+        .post('/pledges')
         .send(samplePledge)
         .end((err, res) => {
           res.should.have.status(200);
@@ -89,7 +89,7 @@ describe('Pledges', ()  => {
     pledge.save((err, data)  => {
      chai.request(server)
       .put(`/pledges/${data._id}?_method=PUT`)
-      .send({'title': 'Updating the title'})
+      .send({'name': 'Harriot Rigsby'})
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.html
