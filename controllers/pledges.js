@@ -83,7 +83,7 @@ app.get('/pledges/:id/edit', (req, res) => {
 // UPDATE Pledge
 app.put('/pledges/:id', (req, res) => {
   Pledge.findByIdAndUpdate(req.params.id, req.body)
-    .then(review => {
+    .then(pledge => {
       res.redirect(`/pledges/${pledge._id}`)
     })
     .catch(err => {

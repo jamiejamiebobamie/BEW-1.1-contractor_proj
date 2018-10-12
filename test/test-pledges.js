@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const server = require('../app');
 const should = chai.should();
 const Pledge = require('../models/pledge');
+var admin = true;
 
 const samplePledge =     {
     "name": "String",
